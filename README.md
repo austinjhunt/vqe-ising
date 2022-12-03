@@ -8,7 +8,15 @@ Choose an algorithm we have not covered and implement it in the programming lang
 
 ## Variational Quantum Eigensolver (VQE)
 
-Introduced by Peruzzo et al. in a July 2014 in their paper [arXiv:1304.3061](https://arxiv.org/abs/1304.3061), Variationa
+Introduced by Peruzzo et al. in a July 2014 in their paper [arXiv:1304.3061](https://arxiv.org/abs/1304.3061), VQE is a hybrid quantum-classical algorithm for efficiently finding eigenvalues of eigenvectors in large problem spaces that was first implemented with a combination of a small-scale photonic quantum processor (quantum computing) and a conventional computer (classical computing). As stated in the [Qiskit documentation](https://qiskit.org/documentation/stubs/qiskit.algorithms.VQE.html#qiskit.algorithms.VQE), the algorithm specifically leverages a **"variational technique (discussed below) to find the minimum eigenvalue of the Hamiltonian _H_ of a given system"**.
+
+### Variational?
+
+The [variational method](<https://en.wikipedia.org/wiki/Variational_method_(quantum_mechanics)>) in quantum mechanics is "a way of approximating the lowest-energy eigenstate or ground state, and some excited states." The method consists of choosing a "trial wavefunction" depending on one or more parameters, and finding the values of these parameters for which the expectation value of the energy is the lowest possible. The wavefunction obtained by fixing the parameters to such values is then an approximation to the ground state wavefunction, and the expectation value of the energy in that state is an upper bound to the ground state energy
+
+#### Ground States vs Excited States in Quantum Systems
+
+The ground state of a quantum-mechanical system is its stationary state of lowest energy; the energy of this state is also known as the zero-point energy of the system. An excited state is any state with energy greater than the ground state.
 
 ## Quantum Approximate Optimization Algorithm (QAOA)
 
