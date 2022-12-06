@@ -1,3 +1,7 @@
+""" This is a Base superclass that provides some 
+basic logging functionality. It is inherited by both the Driver and the 
+VQEIsingSolver class. 
+"""
 import logging 
 from conf import LOG_FOLDER_PATH
 

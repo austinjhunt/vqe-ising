@@ -23,6 +23,7 @@ import random
 import numpy as np
 from sympy import Symbol
 from base import Base
+from conf import NUM_SIMULATION_REPETITIONS
 
 class VQEIsingSolver(Base):
     """ VQEIsingSolver is a class that encapsulates logic for using VQE 
@@ -441,7 +442,11 @@ class VQEIsingSolver(Base):
         sweep = (cirq.Linspace(key='alpha', start=0.0, stop=1.0, length=sweep_size)
                 * cirq.Linspace(key='beta', start=0.0, stop=1.0, length=sweep_size)
                 * cirq.Linspace(key='gamma', start=0.0, stop=1.0, length=sweep_size))
-        results = simulator.run_sweep(ansatz_circuit, params=sweep, repetitions=100)
+        results = simulator.run_sweep(
+            ansatz_circuit, 
+            params=sweep, 
+            repetitions=NUM_SIMULATION_REPETITIONS
+            )
 
         min = None
         min_params = None
