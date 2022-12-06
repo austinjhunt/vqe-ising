@@ -121,14 +121,14 @@ class VQEIsingSolver(Base):
         Step 1. Apply an initial mixing step that puts all qubits into the 
         |+> = 1/sqrt(2) (|0>+|1>) state. (i.e., a superposition achieved with Hadamard gate)
 
-        2. Apply a cirq.ZPowGate for the same parameter for all qubits where 
+        Step 2. Apply a cirq.ZPowGate for the same parameter for all qubits where 
         the transverse field term h is +1
 
-        3. Apply a cirq.CZPowGate for the same parameter between all qubits where the 
+        Step 3. Apply a cirq.CZPowGate for the same parameter between all qubits where the 
         coupling field term J is +1. If the field is -1, apply cirq.CZPowGate conjugated by X
         gates on all qubits.
 
-        4. Apply an cirq.XPowGate for the same parameter for all qubits.
+        Step 4. Apply an cirq.XPowGate for the same parameter for all qubits.
 
         Returns: 
         cirq.Circuit - the ansatz / educated initial guess with initial parameter values 
