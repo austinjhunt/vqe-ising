@@ -4,6 +4,18 @@
 algorithm to find the ground state of a 2D +/- Ising model with a transverse field.
 It uses Google's cirq library to create and simulate quantum circuit execution to handle
 the quantum portion of the VQE algorithm. 
+
+It is based on the Google Quantum AI documentation found here: 
+https://quantumai.google/cirq/experiments/variational_algorithm
+
+But this module rearchitects the code they provide in a more expressive, object-oriented form
+primarily to assist with understanding the logical flow of the VQE algorithm. 
+
+The Driver in main.py instantiates one of these solvers, passing in a grid size to use 
+for the Ising model. Then the driver executes the solver.simulate() method to run the simulation
+and identify the minimum energy level (ground state energy) of a given instance of the 
+Ising model. The simulate method of the solver returns a dictionary containing that 
+minimum energy as well as the parameters that resulted in that minimum energy. 
 """
 
 import cirq
