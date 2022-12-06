@@ -1,0 +1,2 @@
+[Driver - main.py:12 - run_ising_solver() ] Creating VQE Ising Solver for Ising model with square grid size 3x3
+[Driver - main.py:12 - run_ising_solver() ] Creating VQE Ising Solver for Ising model with square grid size 4x4
