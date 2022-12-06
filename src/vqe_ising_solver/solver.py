@@ -30,7 +30,10 @@ class VQEIsingSolver(Base):
     algorithm to solve an instance of the 2D +/- Ising problem. It inherits
     from Base for logging purposes. """
 
-    def __init__(self, name: str = 'VQEIsingSolver', verbose: bool = False, ising_grid_size: int = 3):
+    def __init__(self, 
+        name: str = 'VQEIsingSolver', # name for logging purposes
+        verbose: bool = False, # whether to use verbose logging
+        ising_grid_size: int = 3): # size of the square model grid
         super().__init__(name, verbose)
         # Init the ising model grid size
         self.ising_grid_size = ising_grid_size 
@@ -40,9 +43,8 @@ class VQEIsingSolver(Base):
         self.jc = None # 2D array (list of lists) representing inter-column links
 
     def create_square_qubit_grid(self):
-        """ Create a square lattice of qubits. The 2D Ising problem has a natural
-        grid structure. 
-
+        """ Create a square lattice of qubits. The 2D Ising 
+        problem has a natural grid structure. 
         Args: 
         
         Returns: 
@@ -50,7 +52,8 @@ class VQEIsingSolver(Base):
         in the list  will have a .row and .col property indicating their 
         position on the grid. 
         """
-        return cirq.GridQubit.square(self.ising_grid_size)
+        return cirq.GridQubit.square(
+            self.ising_grid_size)
 
     
     def build_random_problem_instance(self): 
@@ -172,8 +175,6 @@ class VQEIsingSolver(Base):
                     if h_ij == 1:
                         yield gate(cirq.GridQubit(i, j))
 
-
-        # 3. Apply a cirq.CZPowGate for the same parameter between all qubits where the coupling field term  is . If the field is , apply cirq.CZPowGate conjugated by  gates on all qubits.
         def step_three(jr: list = [], jc: list = [], num_half_turns: float = 0.1):
             """
             Use a generator to yield a parameterized sub-circuit for a layer of the VQE algorithm. 
