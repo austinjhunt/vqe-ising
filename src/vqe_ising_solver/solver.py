@@ -112,11 +112,9 @@ class VQEIsingSolver(Base):
         h_half_turns - sympy.Symbol - parameterized (non-static) number of half turns to apply with Z rotation gate in step 2. Value range driven by sympy. 
         j_half_turns - sympy.Symbol - parameterized (non-static) number of rotations about |11> conditioned on jr, jc to apply in step 3. Value range driven by sympy.
         
-
         Ansatz  will consist of two sub-circuits. 
         Sub-circuit 1 is is step one.  
         Sub-circuit 2 is steps 2-4
-        the following sub-circuit steps:
         
         Step 1. Apply an initial mixing step that puts all qubits into the 
         |+> = 1/sqrt(2) (|0>+|1>) state. (i.e., a superposition achieved with Hadamard gate)
