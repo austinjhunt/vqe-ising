@@ -15,6 +15,7 @@ very unlikely that a polynomial algorithm could exist to solve it.
 
 """
 import cirq
+import logging
 
 # Create a circuit on a Grid 
 # ISING problem has a natural structure on a grid,
@@ -40,6 +41,11 @@ print(qubits)
 # circuit.append(cirq.H(q) for q in qubits if (q.row + q.col) % 2 == 0)
 # circuit.append(cirq.X(q) for q in qubits if (q.row + q.col) % 2 != 0)
 # print(circuit)
+
+class IsingSolver: 
+    def __init__(self): 
+        pass 
+
 
 
 # Creating the Ansatz 

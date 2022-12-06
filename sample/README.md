@@ -1,0 +1,6 @@
+# VQE Sample Code for Ising Model Optimization Problem
+This folder contains some simple `cirq` code that is used in the [Google Quantum AI documentation](https://quantumai.google/cirq/experiments/variational_algorithm) to explain the [VQE algorithm](https://en.wikipedia.org/wiki/Variational_quantum_eigensolver), and more generally Variational Quantum Algorithms that leverage parameterized quantum circuits (PQCs) to solve optimization problems.
+
+This example they provide in their documentation, which focuses on the optimization of a 2D +/- [Ising model](https://en.wikipedia.org/wiki/Ising_model), served as a basis for my own more robust implementation found in the [../src](../src/__init__.py) directory. 
+
+Much of the code they provide is then later replaced with alternative code which is a bit unclear in the documentation. My own implementation actually strips out the code that is not needed, and encapsulates the code that is needed within methods that are expressively named such that it the overall flow of the VQE algorithm is easier to understand. 
