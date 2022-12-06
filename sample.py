@@ -18,9 +18,9 @@ import cirq
 
 # Create a circuit on a Grid 
 # ISING problem has a natural structure on a grid,
-# so use Circ's built in cirq.GridQubit as our qubits
+# so use Cirq's built in cirq.GridQubit as our qubits
 
-# define length and width of grid
+# define length and width of grid... 3 x 3 atoms 
 length = 3 
 
 # define qubits on the grid
@@ -43,6 +43,7 @@ print(qubits)
 
 
 # Creating the Ansatz 
+
 # one convenient pattern is to use a python Generator for defining sub-circuits or layers in our algorithm. 
 # we will define a function that takes in the relevant parameters and then yields the operations 
 # for the sub-circuit, then this can be appended to the cirq.Circuit
