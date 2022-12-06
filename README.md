@@ -1,6 +1,6 @@
-# Implementing the Variational Quantum Eigensolver (VQE) Algorithm and Quantum Approximate Optimization Algorithm (OAOA) Using [Qiskit](https://qiskit.org)
+# Implementing the Variational Quantum Eigensolver (VQE) Algorithm Using [Cirq](https://quantumai.google/cirq/)
 
-This is a final project for [CS 8395 - Special Topics: Introduction to Quantum Computing]() at [Vanderbilt University](https://vanderbilt.edu) taught by [Dr. Chuck Easttom](http://www.chuckeasttom.com/)
+This VQE implementation with Cirq was put together for a final project for [CS 8395 - Special Topics: Introduction to Quantum Computing]() at [Vanderbilt University](https://vanderbilt.edu) taught by [Dr. Chuck Easttom](http://www.chuckeasttom.com/)
 
 ## Problem Statement
 
@@ -8,21 +8,68 @@ Choose an algorithm we have not covered and implement it in the programming lang
 
 ## Variational Quantum Eigensolver (VQE)
 
-Introduced by Peruzzo et al. in a July 2014 in their paper [arXiv:1304.3061](https://arxiv.org/abs/1304.3061), VQE is a hybrid quantum-classical algorithm for efficiently finding eigenvalues of eigenvectors in large problem spaces that was first implemented with a combination of a small-scale photonic quantum processor (quantum computing) and a conventional computer (classical computing). As stated in the [Qiskit documentation](https://qiskit.org/documentation/stubs/qiskit.algorithms.VQE.html#qiskit.algorithms.VQE), the algorithm specifically leverages a **"variational technique (discussed below) to find the minimum eigenvalue of the Hamiltonian _H_ of a given system"**.
+Originally proposed by Peruzzo et al. in a 2014 Nature Communications paper [arXiv:1304.3061](https://arxiv.org/abs/1304.3061), the VQE algorithm is a NISQ algorithm (an algorithm designed to run on NISQ era quantum computers) that leverages both quantum and classical computation to solve the problem of finding a minimum eigenvalue of a Hermitian matrix. 
 
-### Variational?
+Knowing that we can model the Hamiltonian\footnote{The Hamiltonian operator $H$ of a quantum system is an operator representing the total energy of that system. The Hamiltonian is represented as a matrix, and the eigenvalues of that matrix are scalar energy levels.} of a given quantum system using a Hermitian matrix, this means we can use VQE to find the ground state energy (lowest-energy state) of that system since that ground state is represented by the Hamiltonian's lowest possible eigenvalue. 
 
-The [variational method](<https://en.wikipedia.org/wiki/Variational_method_(quantum_mechanics)>) in quantum mechanics is "a way of approximating the lowest-energy eigenstate or ground state, and some excited states." The method consists of choosing a "trial wavefunction" depending on one or more parameters, and finding the values of these parameters for which the expectation value of the energy is the lowest possible. The wavefunction obtained by fixing the parameters to such values is then an approximation to the ground state wavefunction, and the expectation value of the energy in that state is an upper bound to the ground state energy
+A quantum system's ground state, or lowest-energy state, provides valuable information about its properties which can be utilized in simulating its behavior, and simulations allow us to better understand, predict, and exploit the behavior of physical systems. Simulating a system, quantum or otherwise, requires an understanding of how that system naturally evolves, and the lowest-energy state of a quantum system is the state to which the system tends toward naturally. As such, the ground state encodes important information about the system's lowest-energy configurations and internal interactions that offer significant value for simulation.
 
-#### Ground States vs Excited States in Quantum Systems
+### Variational Quantum Algorithms (VQAs)
 
-The ground state of a quantum-mechanical system is its stationary state of lowest energy; the energy of this state is also known as the zero-point energy of the system. An excited state is any state with energy greater than the ground state.
+The VQE algorithm belongs to a larger class of Variational Quantum Algorithms (VQAs) which, [as described by Cerezo et al.](https://arxiv.org/abs/2012.09265), are designed to classically optimize parameterized quantum circuits (PQCs) --- that is, quantum circuits described by [Benedetti et al.](https://iopscience.iop.org/article/10.1088/2058-9565/ab4eb5) as trainable machine learning models. More specifically, a VQA takes a machine learning approach to quantum circuit optimization in that it defines a reusable, fixed-structure PQC with unchanging quantum gate types and iteratively runs that circuit many times with varying gate parameters, where changed parameters affect gate behavior and thus the measured outputs of the circuit. As an example, a PQC might have a parameter that controls the strength of a coupling between two qubits or a parameter that controls the angle of a rotation gate. By iteratively adjusting these parameters (e.g., with a grid search, which we also see in hyperparameter optimization of machine learning models \cite{liashchynskyi2019grid}), one can identify the specific set of parameter values that produce the best solution to the problem in question.
 
-## Quantum Approximate Optimization Algorithm (QAOA)
-
-Introduced by Edward Farhi, Jeffrey Goldstone, and Sam Gutmann in their paper [arXiv:1411.4028](https://arxiv.org/abs/1411.4028), QAOA is a quantum algorithm that produces approximate solutions for combinatorial optimization problems. As stated in the abstract, _"The algorithm depends on a positive integer p and the quality of the approximation improves as p is increased. The quantum circuit that implements the algorithm consists of unitary gates whose locality is at most the locality of the objective function whose optimum is sought. The depth of the circuit grows linearly with p times (at worst) the number of constraints. If p is fixed, that is, independent of the input size, the algorithm makes use of efficient classical preprocessing. If p grows with the input size a different strategy is proposed."_
+In the case of VQE, where the goal is to find the ground state of a quantum system, we aim to find parameter values that minimize the expectation value of the quantum system's Hamiltonian. Expectation values (EVs) essentially help us mathematically describe measurements in quantum systems; the expectation value of an observable is the average of all possible measurement outcomes for that observable weighted by their respective probabilities. The expectation value of the Hamiltonian calculated with some wave function $\psi$ is denoted $\langle \psi | H | \psi \rangle$ or simply $\langle H \rangle_{\psi}$. [The next section](#the-variational-principle) explains the principle behind this in more detail.
 
 
+### The Variational Principle
+The variational principle on which VQE is based states that for a given Hermitian matrix $H$ (e.g., the Hamiltonian of a quantum system), its expectation value calculated with a trial wave function $\psi$ (denoted $\langle H \rangle_{\psi}$) must always be greater than or equal to its minimum eigenvalue $\lambda_{\text{min}}$ where the minimum eigenvalue is equal to the ground state energy $E_0$ of the quantum system. This can be mathematically expressed as 
+
+$$\lambda_{\text{min}} \leq \langle H \rangle_{\psi} \implies E_0 \leq \langle H \rangle_{\psi}$$
+
+Note: A Hermitian matrix is a complex square matrix that is equal to its own conjugate transpose, meaning the element in the $i$-th row and $j$-th column is equal to the complex conjugate of the element in the $j$-th row and $i$-th column, for all indices $i$ and $j$.
+
+We know that the Schrödinger equation describes how a given quantum system changes over time. With the time-independent version of that equation
+
+$$H|\psi\rangle = E | \psi \rangle$$
+
+the rate at which the system changes is constant and the solution to the equation consequently describes the allowed states of the system and their associated energy levels, which essentially equate to rules governing the system's behavior that can be used for simulating the system. 
+
+The idea with VQE is to start with an initial educated guess (called the ``ansatz") for the trial wave function $\psi$, then use quantum computing to calculate the energy using that wave function, and then adjust that wave function using a classical optimizer, and repeat until the expectation value of the Hamiltonian $H$ converges to a minimum. That minimum value, once found, must be the ground state energy $E_0$ of the quantum system since the variational principle guarantees that $E_0$ is the lower bound for the energy. A diagram of this flow is depicted below. 
+
+![VQE High-Level Flow](img/vqe-diagram.png)
+
+The key note here is that VQE uses **quantum computing** for calculating the energy but uses **classical computation** for optimizing variational parameters (the wave function). 
+
+### How VQE Works 
+
+To understand how the VQE algorithm works, let us consider a specific, simple problem: finding the interatomic distance of a lithium hydride (LiH) molecule.
+
+In this simple case, we can make the interatomic distance of LiH a parameter of our PQC, with the goal being to find the distance that results in the lowest energy measurement. The figure below depicts an approximation of the energy profile of the molecule. 
+
+![energy profile of LiH](img/lih-interatomic-distance.png)
+
+At each distance, VQE computes the lowest energy. After all of those energy computations, the distance that resulted in the lowest(overall) energy is the actual interatomic distance of the molecule. 
+
+The first thing we need in order to use VQE is an educated guess (an ansatz) for the trial wave function $\psi$ of LiH. Note here that creating this initial ansatz requires specific domain knowledge of the problem; we need to encode our molecule into a quantum state (qubits) in order to use quantum computing to calculate its energy, which means we need to be very familiar with the molecule. This mapping of the molecule into the quantum wave function (i.e., into qubits) will take into account properties like its molecular geometry, its electronic orbitals, and its electron count. 
+
+Since we are interested in finding the molecule's interatomic distance (the unknown for this problem), we can parameterize the geometry property such that VQE will tell us which specific value of that property results in the lowest energy. First, though, we provide an educated guess for its value in our ansatz. Let our initial guess for the distance value be $D_0$. 
+
+Next, the quantum computer will execute a series of measurements using our initial ansatz with distance $D_0$ to calculate the energy of the LiH molecule. 
+
+After that, the energy measured is returned back to the classical optimizer which applies an update to the ansatz. Once the energy at this distance $D_0$ converges to a minimum value, VQE then moves to the next interatomic distance $D_1$ and repeats, as shown the VQE diagram above. 
+
+
+
+The below section will provide information about the Cirq framework from Google and the motivation for using it and will subsequently provide a look at the implemented algorithm using that framework. 
+
+\subsection{The Cirq Framework}
+\label{subsection:thecirqframework}
+
+[Originally announced in July of 2018](https://ai.googleblog.com/2018/07/announcing-cirq-open-source-framework.html) at the International Workshop on Quantum Software and Quantum Machine Learning by Google's AI Quantum Team, Cirq is an open source framework for NISQ quantum computers that allows researchers to investigate whether these computers can solve real-world computational problems. One uses the Cirq framework via the ``cirq" Python library which offers useful abstractions for writing, optimizing, and running quantum circuits either on simulators or real NISQ computers.
+
+Cirq was chosen as the implementation tool for the VQE algorithm because of the extensive and [clear documentation](https://quantumai.google/cirq/experiments/variational_algorithm) offered by Google Quantum AI on the use of their Python library for such an implementation, as well as the library's overall expressiveness and ease of use. 
+
+A supplemental implementation with Qiskit was also pursued in reference to their [own documentation](https://qiskit.org/textbook/ch-applications/vqe-molecules.html) but a number of issues were encountered due to rapid evolution of their ``qiskit" SDK for Python (specifically with Qiskit Aqua and Qiskit Nature) and its inconsistency with published resources and documentation. Nonetheless, apart from the implementation specifics, resources like IBM Quantum's [YouTube video](https://www.youtube.com/watch?v=Z-A6G0WVI9w) on the VQE algorithm provided useful theoretical insight on why the algorithm is useful and how to apply it to a specific problem like finding the interatomic distance of a molecule.
 
 # Ising model Background for Cirq Implementation in [sample.py](sample.py)
 Suppose you have a system of N atoms on a square lattice (grid). So the length and width of the grid is sqrt(N). 
@@ -45,3 +92,8 @@ Another resource actually ignores the external magnetic field entirely and descr
 $$E_\mu = \sum_{<i,j>} -J \sigma_i \sigma_j =  -J \sum_{<i,j>} \sigma_i \sigma_j =$$
 
 which only captures the coupling of neighboring atoms. That is, take each atom, get the spin direction of the atom to the up/down/left/right, sum that total, and add that to a global total for the full grid. 
+
+
+### A Note on Quantum Approximate Optimization Algorithm (QAOA)
+
+Introduced by Edward Farhi, Jeffrey Goldstone, and Sam Gutmann in their paper [arXiv:1411.4028](https://arxiv.org/abs/1411.4028), QAOA is a quantum algorithm that produces approximate solutions for combinatorial optimization problems. As stated in the abstract, _"The algorithm depends on a positive integer p and the quality of the approximation improves as p is increased. The quantum circuit that implements the algorithm consists of unitary gates whose locality is at most the locality of the objective function whose optimum is sought. The depth of the circuit grows linearly with p times (at worst) the number of constraints. If p is fixed, that is, independent of the input size, the algorithm makes use of efficient classical preprocessing. If p grows with the input size a different strategy is proposed."_
