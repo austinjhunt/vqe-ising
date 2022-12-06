@@ -1,4 +1,5 @@
-""" This file contains a Driver that is used to actually drive the 
+""" 
+This file contains a Driver that is used to actually drive the 
 instantiation of VQEIsingSolvers and the execution of their .simulate() methods. 
 """
 from base import Base
