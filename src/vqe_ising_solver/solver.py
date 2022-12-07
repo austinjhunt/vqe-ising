@@ -105,7 +105,7 @@ class VQEIsingSolver(Base):
             'links_in_col': jc_links_in_col
         }
  
-    def initialize_ansatz(self, x_half_turns: Symbol = None, h_half_turns = None, j_half_turns: Symbol = None): 
+    def initialize_ansatz(self, x_half_turns: Symbol = None, h_half_turns: Symbol = None, j_half_turns: Symbol = None): 
         """ First step of VQE is creating a parameterized (via sympy) "ansatz" (a trial wave function) 
         that essentially encodes the problem in question into qubits.
         This ansatz is an educated guess about the parameters for our Parameterized 
