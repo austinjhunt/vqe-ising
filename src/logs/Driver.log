@@ -1,2 +1,4 @@
-[Driver - main.py:12 - run_ising_solver() ] Creating VQE Ising Solver for Ising model with square grid size 3x3
-[Driver - main.py:12 - run_ising_solver() ] Creating VQE Ising Solver for Ising model with square grid size 4x4
+[Driver - main.py:16 - run_ising_solver() ] Creating VQE Ising Solver for Ising model with square grid size 3x3
+[Driver - main.py:21 - run_ising_solver() ] With a grid size of 3, the minimum energy level is -2.74 corresponding to the parameters cirq.ParamResolver({'alpha': 0.6666666666666666, 'beta': 0.0, 'gamma': 0.3333333333333333})
+[Driver - main.py:16 - run_ising_solver() ] Creating VQE Ising Solver for Ising model with square grid size 4x4
+[Driver - main.py:21 - run_ising_solver() ] With a grid size of 4, the minimum energy level is -2.86 corresponding to the parameters cirq.ParamResolver({'alpha': 0.7777777777777778, 'beta': 0.2222222222222222, 'gamma': 0.6666666666666666})

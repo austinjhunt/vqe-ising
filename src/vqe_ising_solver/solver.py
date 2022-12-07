@@ -1,6 +1,9 @@
 
 
-""" This module demonstrates use of the Variational Quantum Eigensolver (VQE)
+""" 
+solver.py 
+
+This module demonstrates use of the Variational Quantum Eigensolver (VQE)
 algorithm to find the ground state of a 2D +/- Ising model with a transverse field.
 It uses Google's cirq library to create and simulate quantum circuit execution to handle
 the quantum portion of the VQE algorithm. 
@@ -308,7 +311,7 @@ class VQEIsingSolver(Base):
         """ 
         This function calculates the objective (it wraps another function energy
         which takes in the measurement results). We can pass this energy_func to the 
-        results.histogram method (where results comes from simulator.run) and 
+        results.histogram method (where results comes from simulator.run)
         so that the Counter (a dictionary, essentially) returned from results.histogram 
         uses the measured energies as the keys. We can then use those values to calculate
         the expectation value (average of the measured energies) of the Hamiltonian.
@@ -388,8 +391,7 @@ class VQEIsingSolver(Base):
     def simulate(self):
         """ 
         Run optimization to find minimum objective value of Hamiltonian (ground state energy of 
-        the Ising model). 
-        This can be done by parameterizing andthe ansatz circuit. 
+        the Ising model). This can be done by parameterizing the ansatz circuit. 
         
         On quantum hardware, one would most likely want to have the optimization code 
         as close to the hardware as possible. As the classical hardware that is 
@@ -409,8 +411,8 @@ class VQEIsingSolver(Base):
         # our ising problem in order to use VQE)
         qubits_grid = self.create_square_qubit_grid()
         
-        # These three variables represent h, jr, jc which are the parameters we are tuning 
-        # for the optimization. 
+        # These three variables represent gate rotation params 
+        # which are the parameters we are tuning for the optimization. 
         alpha, beta, gamma = (Symbol(_) for _ in ['alpha', 'beta', 'gamma'])
         # Parameterize the circuit gates with sympy Symbols as the half turns
         # The parameter vals are specified at runtime using a cirq.ParamResolver,
