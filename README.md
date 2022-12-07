@@ -27,8 +27,6 @@ To run this project, take the following steps.
 4. Navigate into the `src` folder (`cd src`)
 5. Run the main module (`python main.py`)
 
-
-
 ## Variational Quantum Eigensolver (VQE)
 
 Originally proposed by Peruzzo et al. in a 2014 Nature Communications paper [arXiv:1304.3061](https://arxiv.org/abs/1304.3061), the VQE algorithm is a NISQ algorithm (an algorithm designed to run on NISQ era quantum computers) that leverages both quantum and classical computation to solve the problem of finding a minimum eigenvalue of a Hermitian matrix. 
