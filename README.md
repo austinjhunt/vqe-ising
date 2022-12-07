@@ -6,6 +6,26 @@ This VQE implementation with Cirq was put together for a final project for [CS 8
 
 Choose an algorithm we have not covered and implement it in the programming language of your choice, along with a paper describing the algorithm, and explaining your choice of algorithm and programming language.
 
+## Implementation 
+
+You can find the custom implementation of VQE using `cirq` in the [`src` directory](src/__init__.py). There is an adjacent [`sample` directory] that contains sample code from the Google Quantum AI Documentation on VQE. This code was stripped back and rearchitected to be more expressive and object oriented in the custom implementation to make the flow of the VQE algorithm a bit more understandable. 
+
+### Architecture  
+The custom implementation in `src` follows an object-orientated architecture, using a [`VQEIsingSolver`](src/vqe_ising_solver/solver.py) class to encapsulate the logic of finding an Ising model ground state with VQE and a [`Driver`](src/main.py) class to Drive the instantiation of VQEIsingSolver instances to solve6 different instances of the Ising model, e.g., for varying grid sizes. Both of these classes inherit from a [`Base`](src/base.py) class for shared logging behavior. 
+
+#### `VQEIsingSolver`
+The [`VQEIsingSolver`](src/vqe_ising_solver/solver.py) class encapsulates the logic of the VQE algorithm specifically for solving an instance of the Ising model. The class itself as well as each method that it offers is heavily documented with explanations of how it relates to the logical flow of the VQE algorithm. The logic contained in the class is based on the Google Quantum AI documentation on VQE, but this implementation strips out the code from their documentation that is not needed, and reorganizes the important logic in a more expressive and object-oriented way such that the flow of the VQE algorithm is easier to understand.
+
+### Running the Implementation
+To run this project, take the following steps. 
+1. Clone the repository and navigate into its root directory. 
+2. Create a Python 3 virtual environment (`python3 -m venv venv`)
+3. Install all of the requirements (`pip install -r requirements.txt`)
+4. Navigate into the `src` folder (`cd src`)
+5. Run the main module (`python main.py`)
+
+
+
 ## Variational Quantum Eigensolver (VQE)
 
 Originally proposed by Peruzzo et al. in a 2014 Nature Communications paper [arXiv:1304.3061](https://arxiv.org/abs/1304.3061), the VQE algorithm is a NISQ algorithm (an algorithm designed to run on NISQ era quantum computers) that leverages both quantum and classical computation to solve the problem of finding a minimum eigenvalue of a Hermitian matrix. 
@@ -93,7 +113,3 @@ $$E_\mu = \sum_{<i,j>} -J \sigma_i \sigma_j =  -J \sum_{<i,j>} \sigma_i \sigma_j
 
 which only captures the coupling of neighboring atoms. That is, take each atom, get the spin direction of the atom to the up/down/left/right, sum that total, and add that to a global total for the full grid. 
 
-
-### A Note on Quantum Approximate Optimization Algorithm (QAOA)
-
-Introduced by Edward Farhi, Jeffrey Goldstone, and Sam Gutmann in their paper [arXiv:1411.4028](https://arxiv.org/abs/1411.4028), QAOA is a quantum algorithm that produces approximate solutions for combinatorial optimization problems. As stated in the abstract, _"The algorithm depends on a positive integer p and the quality of the approximation improves as p is increased. The quantum circuit that implements the algorithm consists of unitary gates whose locality is at most the locality of the objective function whose optimum is sought. The depth of the circuit grows linearly with p times (at worst) the number of constraints. If p is fixed, that is, independent of the input size, the algorithm makes use of efficient classical preprocessing. If p grows with the input size a different strategy is proposed."_
