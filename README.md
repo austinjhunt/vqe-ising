@@ -16,6 +16,9 @@ The custom implementation in `src` follows an object-orientated architecture, us
 #### `VQEIsingSolver`
 The [`VQEIsingSolver`](src/vqe_ising_solver/solver.py) class encapsulates the logic of the VQE algorithm specifically for solving an instance of the Ising model. The class itself as well as each method that it offers is heavily documented with explanations of how it relates to the logical flow of the VQE algorithm. The logic contained in the class is based on the Google Quantum AI documentation on VQE, but this implementation strips out the code from their documentation that is not needed, and reorganizes the important logic in a more expressive and object-oriented way such that the flow of the VQE algorithm is easier to understand.
 
+### Logging 
+Logging is handled with the `logging` library and logging functionality is centralized in the [`Base`](src/base.py) superclass, which is inherited by both the Driver and VQEIsingSolver classes. The logging directory is specified in the [`conf.py`](src/conf.py) configuration file. Each class instance logs to its own file (based on its name). 
+
 ### Running the Implementation
 To run this project, take the following steps. 
 1. Clone the repository and navigate into its root directory. 
