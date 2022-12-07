@@ -8,7 +8,7 @@ Choose an algorithm we have not covered and implement it in the programming lang
 
 ## Implementation 
 
-You can find the custom implementation of VQE using `cirq` in the [`src` directory](src/__init__.py). There is an adjacent [`sample` directory] that contains sample code from the Google Quantum AI Documentation on VQE. This code was stripped back and rearchitected to be more expressive and object oriented in the custom implementation to make the flow of the VQE algorithm a bit more understandable. 
+You can find the custom implementation of VQE using `cirq` in the [`src` directory](src/__init__.py). There is an adjacent [`sample` directory](sample/README.md) that contains sample code from the Google Quantum AI Documentation on VQE. This code was stripped back and rearchitected to be more expressive and object oriented in the custom implementation to make the flow of the VQE algorithm a bit more understandable. 
 
 ### Architecture  
 The custom implementation in `src` follows an object-orientated architecture, using a [`VQEIsingSolver`](src/vqe_ising_solver/solver.py) class to encapsulate the logic of finding an Ising model ground state with VQE and a [`Driver`](src/main.py) class to Drive the instantiation of VQEIsingSolver instances to solve6 different instances of the Ising model, e.g., for varying grid sizes. Both of these classes inherit from a [`Base`](src/base.py) class for shared logging behavior. 
